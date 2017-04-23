@@ -1,0 +1,40 @@
+{
+  "name": "hses_freinds",
+  "version": "1.0.0",
+  "description": "This is a git repository for the development of HSES of Friends website and open source tool for other schools to use a template to create as well.",
+  "main": "main.js",
+  "scripts": {
+    "start": "nodemon sever.js",
+    "build": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --content-base src/ --inline --hot",
+    "build:prod": "webpack -p && cp src/index.html dist/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreGarvin/of_Friends.git"
+  },
+  "author": [
+    "andreGarvin"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andreGarvin/of_Friends/issues"
+  },
+  "homepage": "https://github.com/andreGarvin/of_Friends#readme",
+  "dependencies": {
+    "axios": "^0.16.1",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "level": "^1.6.0",
+    "nodemon": "^1.11.0",
+    "socket.io": "^1.7.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.0",
+    "style-loader": "^0.16.1",
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.4"
+  }
+}
