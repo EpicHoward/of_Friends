@@ -7,23 +7,22 @@ app.use(BodyParser.urlencoded({ extended: true }));
 app.use(BodyParser.json());
 
 // my modules
-var routes = require('./lib/routes.js');
+const routes = require('./lib/routes.js'); // holds all the routes for the backend 
 
 
 /*
     getting access to the files 
     in the current working directory
 */
-app.use(express.static(`${__dirname}/app`));
+// app.use(express.static(`${__dirname}/dist`));
 
 
 // declaring the 'port' variable
 var port = process.env.port || 8080;
 
 // routes
-app.get('/', routes.index);
-app.get('/search/:query', routes.search);
-// app.get('/:page', routes.tab);
+app.get('/', routes.tab);
+app.get('/:page', routes.tab);
 
 
 app.listen(port, (req, resp) => {

@@ -4,7 +4,7 @@
   "description": "This is a git repository for the development of HSES of Friends website and open source tool for other schools to use a template to create as well.",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon sever.js",
+    "start": "nodemon server.js",
     "build": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --content-base src/ --inline --hot",
     "build:prod": "webpack -p && cp src/index.html dist/index.html"
   },
