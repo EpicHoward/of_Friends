@@ -49,7 +49,7 @@
 .da-slide h2 {
 	font-family: 'texgyreadventorregular';
 	text-transform: uppercase;
-	color: #fff;
+	color: #fff !important;
 	width: 70%;
 	top: 90px;
 	font-size:6em;
@@ -59,7 +59,7 @@
 .da-slide p{
 	font-family: 'open_sansregular';
 	top: 195px;
-	color: #fff;
+	color: #fff !important;
 	font-size: 16px;
 	overflow: hidden;
 	line-height: 24px;
