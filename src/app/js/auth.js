@@ -21,8 +21,21 @@ function authUser( user_name, email, password, authMethod ) {
                 firebasedb.database().ref('alum/' +  user_name ).set({
                     email: email,
                     image: false,
-                    posts: {},
-                    subscribed: 0
+                    posts: {
+                        'My frist job': {
+                            views: 0,
+                            content: '',
+                            image: false,
+                            date: false,
+                            user_name: 'andre garvin'
+                        }
+                    },
+                    subscribed: {
+                        count: 1,
+                        subscribers: {
+                            'andre garvin': 'andregarvin718@gmail.com'
+                        }
+                    }
                 })
                 
                 break;
@@ -40,20 +53,34 @@ function authUser( user_name, email, password, authMethod ) {
 
 
 firebasedb.auth().onAuthStateChanged(firebaseUser => {
+    
     if ( firebaseUser ) {
+        
+        function getUser( usersObj, email ) {
+            
+            for ( var i in usersObj ) {
+                
+                if ( usersObj[ i ].email === email ) {
+                    
+                    return usersObj[ i ];
+                }
+            }
+        }
         
         console.log(`You are now logged in ${ firebaseUser.email }`);
         
-        firebaseUser = firebaseUser.email;
+        var firebaseUserEmail = firebaseUser.email;
         
         const dbRef = firebasedb.database().ref();
         
         
-        $('#logout').hide();
         dbRef.on('value', snap => {
           
             var usersdb = snap.val();
-            console.log( usersdb );
+            
+            var firebaseUser = getUser( usersdb.alum, firebaseUserEmail );
+        
+            console.log( firebaseUser );
         });
     }
     else {
@@ -63,6 +90,9 @@ firebasedb.auth().onAuthStateChanged(firebaseUser => {
 });
 
 export default {
-    logOut: firebasedb.auth().signOut(),
+    logOut: function() {
+        
+        return firebasedb.auth().signOut();
+    },
     authUser: authUser
 };
