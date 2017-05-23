@@ -1,3 +1,5 @@
+/dist
+/.arc
 # Logs
 logs
 *.log
