@@ -1,7 +1,6 @@
 import firebasedb from './firebase.js';
 import user, { profile } from './firebase.js';
 
-
 // authentication JavaScript file
 
 const auth = firebasedb.auth();
@@ -49,9 +48,12 @@ firebasedb.auth().onAuthStateChanged(firebaseUser => {
         
         const dbRef = firebasedb.database().ref();
         
+        
+        $('#logout').hide();
         dbRef.on('value', snap => {
           
-            console.log( snap.val().alum )
+            var usersdb = snap.val();
+            console.log( usersdb );
         });
     }
     else {

@@ -90,3 +90,12 @@
 .mailbox input {
   margin: 20px 0px 20px 0px;
 }
+
+
+input {
+  margin-top: 15px;
+}
+
+button {
+  margin: 20px;
+}
