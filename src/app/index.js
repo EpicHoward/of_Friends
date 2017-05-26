@@ -2,21 +2,14 @@
 import './css/main.css';
 
 // JavaScript files to include for the application
-import firebasedb import './js/firebase.js';
-import newsLetter, { addTodNewsLetter } from './js/newsletter.js';
+import sendNewLetter from './js/newsletter.js';
+import newsfeed from './js/newsfeed.js';
+import auth from './js/auth.js';
 
 
-$(document).ready(function () {
+function profile( firebaseUser ) {
     
-    $('#newsLetterEmailInput').keydown(function(k) {
-        if ( k.which === 13 ) {
-            
-            console.log( $('#newsLetterEmailInput').val() );
-        }
-    });
-    
-    $('#newsLetterEmailBtn').click(function() {
-        
-        console.log( $('#newsLetterEmailInput').val() );
-    });
-});
+    console.log( firebaseUser );
+};
+
+export default { profile: profile };
