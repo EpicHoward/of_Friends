@@ -27,6 +27,7 @@
     "firebase": "^3.9.0",
     "level": "^1.6.0",
     "nodemon": "^1.11.0",
+    "sendgrid": "^5.1.0",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
