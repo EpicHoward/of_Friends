@@ -5,8 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "nodemon server.js",
-    "build": "webpack -d && cp src/index.html dist/index.html && cp src/home.html dist/home.html && webpack-dev-server --content-base src/ --inline --hot",
-    "build:prod": "webpack -p && cp src/index.html dist/index.html"
+    "build": "webpack -d && cp src/index.html src/home.html dist && webpack-dev-server --content-base src/ --inline --hot",
+    "build:prod": "webpack -p && cp src/index.html src/home.html dist"
   },
   "repository": {
     "type": "git",
