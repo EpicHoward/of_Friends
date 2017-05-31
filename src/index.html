@@ -8,7 +8,48 @@
 </head>
 <body>
 
-  
+  <div id="app">
+        <button id='logout' class='btn btn-default pull-right'>logout</button>
+
+        <div class="profile-container col-xs-5 col-sm-5 col-md-5">
+            <h3 id='user_name'></h3>
+            <h3 id='email'></h3>
+
+            <div class="post-container col-md-12 col-sm-12 col-xs-12">
+
+                  <input id='title' type="text" class='form-control' placeholder="title" />
+                  <textarea id='content' class='form-control' rows='4' placeholder='write something'></textarea>
+
+                  <button id='submit' class='btn btn-success pull-right'>submit</button>
+            </div>
+        </div>
+
+
+        <div class="main-container">
+
+              <div class="col-xs-5 col-sm-5 col-md-5 pull-right">
+                    <input id='query-search' type="text" class="form-control" placeholder="search" />
+
+                    <button type="button" class='btn btn-default'>newsfeed</button>
+                    <button type="button" class='btn btn-default'>settings</button>
+              </div>
+
+
+              <!-- displays post the user makes and other the user subscribs to -->
+              <div class="newsfeed-container col-xs-5 col-sm-5 col-nd-5">
+                   <h2 id='ui-message' class='text-center'></h2>
+              </div>
+
+              <!-- this div displays the results of a query search  -->
+              <div class="results-container">
+                    <p id='query' class='lead text-center'></p>
+              </div>
+
+              <!-- the users settings data -->
+              <div class="settings-container"></div>
+        </div>
+  </div>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="bundle.js"></script>
 </body>

@@ -1,3 +1,45 @@
+#logout {
+    margin: 10px 10px 0px 0px;
+}
+
+.profile-container {
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    margin: 20px;
+}
+
+.post-container {
+    border-top: 1px dashed #ddd;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.post-container input {
+    margin: 10px 0px 10px 0px;
+}
+
+.post-container textarea {
+    margin: 13px 0px 10px 0px;
+}
+
+.main-container {
+    margin-top: 20px;
+}
+
+#query-search {
+    margin-bottom: 20px;
+}
+
+.post {
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 20px;
+    margin: 20px;
+}
+
+
+/*
+
 .btn-success, .btn-blue {
   border: none;
 }
@@ -6,11 +48,10 @@
   background-color: #15CA6E;
 }
 
-/*.btn-default {
+.btn-default {
   background-color: #38a3dc;
   color: #fff;
-}*/
-
+}
 .navbar {
   margin-bottom: 0px;
   margin-top: 0px;
@@ -29,7 +70,7 @@
 }
 
 .left-panel {
-  /*border: 1px solid purple;*/
+  border: 1px solid purple;
   padding: 10px
 }
 
@@ -99,3 +140,5 @@ input {
 button {
   margin: 20px;
 }
+
+*/

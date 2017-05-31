@@ -5,8 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "nodemon server.js",
-    "build": "webpack -d && cp src/index.html src/home.html dist && webpack-dev-server --content-base src/ --inline --hot",
-    "build:prod": "webpack -p && cp src/index.html src/home.html dist"
+    "build": "webpack -d && cp src/index.html src/auth.html dist && webpack-dev-server --content-base src/ --inline --hot",
+    "build:prod": "webpack -p && cp src/index.html src/auth.html dist"
   },
   "repository": {
     "type": "git",
@@ -22,13 +22,8 @@
   "homepage": "https://github.com/andreGarvin/of_Friends#readme",
   "dependencies": {
     "axios": "^0.16.1",
-    "body-parser": "^1.17.1",
-    "express": "^4.15.2",
     "firebase": "^3.9.0",
-    "level": "^1.6.0",
-    "nodemon": "^1.11.0",
-    "sendgrid": "^5.1.0",
-    "socket.io": "^1.7.3"
+    "sendgrid": "^5.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

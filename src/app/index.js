@@ -2,66 +2,81 @@
 import './css/main.css';
 
 // JavaScript files to include for the application
-import sendNewLetter from './js/newsletter.js';
-import firebasedb from './js/firebase.js';
-import newsfeed from './js/newsfeed.js';
-import auth from './js/auth.js';
+import sendNewLetter from './js/newsletter';
+import firebasedb from './js/firebase';
+import newsfeed from './js/newsfeed';
 
 
-function app( firebaseUser ) {
-    
-    console.log( firebaseUser );
-    
-    $(document).ready(function() {
-        $('#logout').click(function() {
-            
-            return firebasedb.auth().signOut();
-        });
-    });
-}
+$('#app').hide();
+const auth = firebasedb.firebase.auth();
 
+firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
-
-const auth = firebasedb.auth();
-
-firebasedb.auth().onAuthStateChanged(firebaseUser => {
-    
+    var userObj;
     if ( firebaseUser ) {
-        
-        function getUser( usersObj, email ) {
-            
-            for ( var i in usersObj ) {
-                
-                if ( usersObj[ i ].email === email ) {
-                    
-                    return usersObj[ i ];
-                }
-                else {
-                    
-                    firebasedb.database().ref(`userdb/${  }`).set();
-                    return 
-                }
-            }
-        }
-        
-        console.log(`You are now logged in ${ firebaseUser.email }`);
-        
-        var firebaseUserEmail = firebaseUser.email;
-        
-        const dbRef = firebasedb.database().ref();
-        
-        
-        dbRef.on('value', snap => {
-          
-            var usersdb = snap.val();
-            
-            var firebaseUser = getUser( usersdb, firebaseUserEmail, firebaseUserName );
-        
-            profile( firebaseUser );
-        });
+
+      userObj = {
+          user_name: firebaseUser.displayName,
+          email: firebaseUser.email
+      };
+
+      firebasedb.getUser( userObj, (err, user_data ) => {
+          $('#app').show();
+
+          // console.log(`You are now logged in ${ firebaseUser.email }`);
+
+          $(document).ready(function() {
+
+              $('#user_name').html(`${ user_data.profile.frist_name } ${ user_data.profile.last_name }`);
+              $('#email').html(user_data.profile.email);
+
+              if ( Object.keys( user_data.posts ).length !== 0 ) {
+
+                  $('.newsfeed-container').html('');
+
+                  for ( var j = user_data.posts.length; j > 0; j-- ) {
+
+                      var post = user_data.posts[j - 1];
+                      $('.newsfeed-container').append(`
+                        <div class='post col-xs-5 col-sm-5 col-md-8 col-xs-offset-1 col-md-offset-3'>
+                             <h3>${ post.title }<h3>
+                             <p class='lead text-center'>${ post.content }</p>
+                        </div>
+                      `);
+                  }
+              }
+              else {
+
+                  $('#ui-message').html('You have no posts, you should make one');
+              }
+
+              $('#logout').click(function() {
+
+                  return firebasedb.firebase.auth().signOut();
+              });
+
+
+              $('#submit').click(function () {
+
+                  var title = $('#title').val();
+                  var content = $('#content').val();
+                  if ( title.length !== 0 && content.length !== 0 ) {
+
+                      user_data.posts = firebasedb.saveTo(`usersdb/${ user_data.profile.frist_name } ${ user_data.profile.last_name }/posts/${ Object.keys( user_data.posts ).length }`,
+                      {
+                        id: Object.keys( user_data.posts ).length,
+                        title: title,
+                        content: content
+                      });
+                  }
+              });
+          });
+      });
+
     }
     else {
-        
-        window.open('home.html', '_blank');
+
+        alert('logging out.');
+        window.open('auth.html', '__blank');
     }
 });
