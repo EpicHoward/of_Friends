@@ -77,6 +77,6 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
     else {
 
         alert('logging out.');
-        window.open('auth.html', '__blank');
+        window.open('auth.html', '__target');
     }
 });

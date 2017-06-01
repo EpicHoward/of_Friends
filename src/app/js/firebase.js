@@ -39,7 +39,7 @@ function createUser( userObj ) {
           }
    };
 
-   firebase.database().ref('usersdb').set( newUser );
+   firebase.database().ref(`usersdb/${ user_name }`).set( newUser );
    return newUser;
 }
 
