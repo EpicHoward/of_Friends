@@ -2,9 +2,8 @@
 import './css/main.css';
 
 // JavaScript files to include for the application
-import sendNewLetter from './js/newsletter';
 import firebasedb from './js/firebase';
-import newsfeed from './js/newsfeed';
+// import Emit from './emit.js';
 
 var main = {
     user_data: undefined,
@@ -16,12 +15,12 @@ var main = {
 
               for ( var j = this.user_data.posts.length; j > 0; j-- ) {
 
-                  var post = his.user_data.posts[j - 1];
+                  var post = this.user_data.posts[j - 1];
                   $('.newsfeed-container').append(`
                       <div class='post col-xs-5 col-sm-5 col-md-8 col-xs-offset-1 col-md-offset-3'>
                           <p class='pull-right'>${ post.date }</p>
 
-                          <img style='height: 50px; width: 50px;' class='img img-rounded' src=${ user_data.profile.profilePic !== '' ? user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' }
+                          <img style='height: 50px; width: 50px;' class='img img-rounded' src=${ this.user_data.profile.profilePic !== '' ? user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' }
                           <p class='pull-left'>${ this.user_data.profile.user_name }</p>
                           <h3>${ post.title }<h3>
                           <p class='lead text-center'>${ post.content }</p>
@@ -45,9 +44,9 @@ var main = {
         var content = $('#content').val();
         if ( title.length !== 0 && content.length !== 0 ) {
 
-            user_data.posts = firebasedb.saveTo(`usersdb/${ user_data.profile.user_name }/posts/${ Object.keys( user_data.posts ).length }`,
+            this.user_data.posts = firebasedb.saveTo(`usersdb/${ this.user_data.profile.user_name }/posts/${ Object.keys( this.user_data.posts ).length }`,
             {
-                id: Object.keys( user_data.posts ).length,
+                id: Object.keys( this.user_data.posts ).length,
                 title: title,
                 content: content
             });
@@ -58,9 +57,8 @@ var main = {
     }
 };
 
-$('#app').hide();
-const auth = firebasedb.firebase.auth();
 
+$('#app').hide();
 firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
     if ( firebaseUser ) {
