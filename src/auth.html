@@ -8,44 +8,44 @@
         <title>home</title>
     </head>
     <body>
-        
-        <div id="firebaseui-auth-container"></div>
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
-        <script src="https://cdn.firebase.com/libs/firebaseui/2.0.0/firebaseui.js"></script>
-        <script type="text/javascript">
-            
-            // Initialize Firebase
-            var config = {
-              apiKey: "AIzaSyAGtfKbKKJoZAHG0GxhgV6sVimydozy1Ik",
-              authDomain: "fhses-1fa2d.firebaseapp.com",
-              databaseURL: "https://fhses-1fa2d.firebaseio.com",
-              projectId: "fhses-1fa2d",
-              storageBucket: "fhses-1fa2d.appspot.com",
-              messagingSenderId: "404702936141"
-            };
 
-            firebase.initializeApp(config);
+      <div id="firebaseui-auth-container"></div>
 
-            // FirebaseUI config.
-            var uiConfig = {
-                signInSuccessUrl: 'index.html',
-                signInOptions: [
-                    // Leave the lines as is for the providers you want to offer your users.
-                    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                    firebase.auth.EmailAuthProvider.PROVIDER_ID
-                ],
-                
-                // Terms of service url.
-                tosUrl: ''
-            };
-    
-            // Initialize the FirebaseUI Widget using Firebase.
-            var ui = new firebaseui.auth.AuthUI(firebase.auth());
-            
-            // The start method will wait until the DOM is loaded.
-            ui.start('#firebaseui-auth-container', uiConfig);
-        </script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+      <script src="https://cdn.firebase.com/libs/firebaseui/2.0.0/firebaseui.js"></script>
+      <script type="text/javascript">
+
+          // Initialize Firebase
+          var config = {
+            apiKey: "AIzaSyAGtfKbKKJoZAHG0GxhgV6sVimydozy1Ik",
+            authDomain: "fhses-1fa2d.firebaseapp.com",
+            databaseURL: "https://fhses-1fa2d.firebaseio.com",
+            projectId: "fhses-1fa2d",
+            storageBucket: "fhses-1fa2d.appspot.com",
+            messagingSenderId: "404702936141"
+          };
+
+          firebase.initializeApp(config);
+
+          // FirebaseUI config.
+          var uiConfig = {
+              signInSuccessUrl: 'index.html',
+              signInOptions: [
+                  // Leave the lines as is for the providers you want to offer your users.
+                  firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                  firebase.auth.EmailAuthProvider.PROVIDER_ID
+              ],
+
+              // Terms of service url.
+              tosUrl: ''
+          };
+
+          // Initialize the FirebaseUI Widget using Firebase.
+          var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+          // The start method will wait until the DOM is loaded.
+          ui.start('#firebaseui-auth-container', uiConfig);
+      </script>
     </body>
 </html>

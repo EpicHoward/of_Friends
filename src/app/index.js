@@ -27,7 +27,7 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
           $(document).ready(function() {
 
-              $('#user_name').html(`${ user_data.profile.frist_name } ${ user_data.profile.last_name }`);
+              $('#user_name').html(user_data.profile.user_name);
               $('#email').html(user_data.profile.email);
 
               if ( Object.keys( user_data.posts ).length !== 0 ) {
@@ -39,6 +39,9 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                       var post = user_data.posts[j - 1];
                       $('.newsfeed-container').append(`
                         <div class='post col-xs-5 col-sm-5 col-md-8 col-xs-offset-1 col-md-offset-3'>
+                             <p class='pull-right'>${ post.date }</p>
+                             <img style='height: 50px; width: 50px;' class='img img-rounded' src=${ user_data.profile.profilePic !== '' ? user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' }
+                             <p class='pull-left'>${ user_data.profile.user_name }</p>
                              <h3>${ post.title }<h3>
                              <p class='lead text-center'>${ post.content }</p>
                         </div>
@@ -62,12 +65,15 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                   var content = $('#content').val();
                   if ( title.length !== 0 && content.length !== 0 ) {
 
-                      user_data.posts = firebasedb.saveTo(`usersdb/${ user_data.profile.frist_name } ${ user_data.profile.last_name }/posts/${ Object.keys( user_data.posts ).length }`,
+                      user_data.posts = firebasedb.saveTo(`usersdb/${ user_data.profile.user_name }/posts/${ Object.keys( user_data.posts ).length }`,
                       {
-                        id: Object.keys( user_data.posts ).length,
-                        title: title,
-                        content: content
+                          id: Object.keys( user_data.posts ).length,
+                          title: title,
+                          content: content
                       });
+
+                      $('#title').val('');
+                      $('#content').val();
                   }
               });
           });
@@ -76,7 +82,6 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
     }
     else {
 
-        alert('logging out.');
-        window.open('auth.html', '__target');
+        window.open('auth.html', '_self');
     }
 });

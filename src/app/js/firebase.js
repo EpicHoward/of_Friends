@@ -16,26 +16,27 @@ firebase.initializeApp(config);
 const date = new Date();
 function createUser( userObj ) {
 
-    var user_name = userObj.user_name;
+    var user_name = userObj.user_name.toLowerCase();
     var newUser = {
            profile: {
-             profilePic: "",
-             first_name: user_name.toLowerCase().split(' ')[0],
-             last_name: user_name.toLowerCase().split(' ')[user_name.toLowerCase().split(' ').length - 1],
-             email: userObj.email,
-             employement: "",
-             bio: ""
+                profilePic: "",
+                user_name: user_name,
+                first_name: user_name.toLowerCase().split(' ')[0],
+                last_name: user_name.toLowerCase().split(' ')[user_name.toLowerCase().split(' ').length - 1],
+                email: userObj.email,
+                employement: "",
+                bio: ""
            },
            subscribers: {
-              "andre garvin" : "andre.garvin@envirostudies.org"
+                "andre garvin" : "andre.garvin@envirostudies.org"
            },
            posts: false,
            meta: {
-             active: "pending",
-             address: "",
-             phone_number: "",
-             type: "",
-             joined: `${ date.getMonth() }/${ date.getDate() }'/${ date.getFullYear() }`,
+                active: "pending",
+                address: "",
+                phone_number: "",
+                type: "",
+                joined: `${ date.getMonth() }/${ date.getDate() }'/${ date.getFullYear() }`,
           }
    };
 
@@ -66,14 +67,12 @@ export default {
     getUser: getUser,
     saveTo: function(db_path, input) {
 
-          console.log('saving');
           try {
 
-              input.date = `${ date.getMonth() }/${ date.getDate() }'/${ date.getFullYear() }`;
-
+              input.date = `${ date.getMonth() + 1 }/${ date.getDate() }'/${ date.getFullYear() }`;
               firebase.database().ref(db_path).set(input);
-              console.log('saved');
-              return;
+
+              return firebase.database().ref(db_path);
           }
           catch (err) {
 
