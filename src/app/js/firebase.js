@@ -69,9 +69,7 @@ export default {
 
           try {
 
-              input.date = `${ date.getMonth() + 1 }/${ date.getDate() }'/${ date.getFullYear() }`;
               firebase.database().ref(db_path).set(input);
-
               return firebase.database().ref(db_path);
           }
           catch (err) {

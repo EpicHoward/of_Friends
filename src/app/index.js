@@ -3,57 +3,57 @@ import './css/main.css';
 
 // JavaScript files to include for the application
 import firebasedb from './js/firebase';
-// import Emit from './emit.js';
+import tool from './tool';
 
 var main = {
     user_data: undefined,
+    newfeed: [],
     showNewsFeed: function() {
 
-          if ( Object.keys( this.user_data.posts ).length !== 0 ) {
+          firebasedb.database().ref('newsfeed').on('value', (snap) => {
 
-              $('.newsfeed-container').html('');
+                console.log(snap.val());
 
-              for ( var j = this.user_data.posts.length; j > 0; j-- ) {
+                this.newsfeed = snap.val().filter((i) => {
 
-                  var post = this.user_data.posts[j - 1];
-                  $('.newsfeed-container').append(`
-                      <div class='post col-xs-5 col-sm-5 col-md-8 col-xs-offset-1 col-md-offset-3'>
-                          <p class='pull-right'>${ post.date }</p>
+                    return tool.includes(Object.keys( this.user_data.subscribers ), i.user_name);
+                })
 
-                          <img style='height: 50px; width: 50px;' class='img img-rounded' src=${ this.user_data.profile.profilePic !== '' ? user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' }
-                          <p class='pull-left'>${ this.user_data.profile.user_name }</p>
-                          <h3>${ post.title }<h3>
-                          <p class='lead text-center'>${ post.content }</p>
-                      </div>
-                 `);
-               }
-         }
-         else {
+                $('.newsfeed-container').html('');
 
-              $('#ui-message').html('You have no posts, you should make one');
-        }
+                for ( var j = this.newsfeed; j > 0; j-- ) {
+
+                    var post = this.newsfeed[j - 1];
+                    $('.newsfeed-container').append(`
+                        <div class='post col-xs-5 col-sm-5 col-md-8 col-xs-offset-1 col-md-offset-3'>
+                            <p class='pull-right'>${ post.date }</p>
+
+                            <img style='height: 50px; width: 50px;' class='img img-rounded' src=${ this.user_data.profile.profilePic !== '' ? user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' }
+                            <p class='pull-left'>${ this.user_data.profile.user_name }</p>
+                            <h3>${ post.title }<h3>
+                            <p class='lead text-center'>${ post.content }</p>
+                        </div>
+                   `);
+                }
+
+          });
+
     },
     displayName: function() {
 
         $('#user_name').html(this.user_data.profile.user_name);
         $('#email').html(this.user_data.profile.email);
     },
-    makePost: function() {
+    emitPost: function( postObj, callback ) {
 
-        var title = $('#title').val();
-        var content = $('#content').val();
-        if ( title.length !== 0 && content.length !== 0 ) {
-
-            this.user_data.posts = firebasedb.saveTo(`usersdb/${ this.user_data.profile.user_name }/posts/${ Object.keys( this.user_data.posts ).length }`,
-            {
-                id: Object.keys( this.user_data.posts ).length,
-                title: title,
-                content: content
-            });
-
-            $('#title').val('');
-            $('#content').val();
-        }
+          this.newsfeed = firebasedb.saveTo(`newsfeed/${ tool.hash() }`,
+          {
+              id: Object.keys( this.user_data.posts ).length,
+              user_name: this.user_data.profile.user_name,
+              title: postObj.title,
+              content: postObj.content,
+              date: `${ date.getMonth() + 1 }/${ date.getDate() }'/${ date.getFullYear() }`
+          });
     }
 };
 
@@ -80,6 +80,11 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
                     main.showNewsFeed();
 
+                    if ( Object.keys( this.user_data.posts ).length === 0 ) {
+
+                        $('#ui-message').html('You have no posts, you should make one');
+                    }
+
                     $('#logout').click(function() {
 
                           return firebasedb.firebase.auth().signOut();
@@ -87,7 +92,16 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
                     $('#submit').click(function () {
 
-                          main.makePost();
+                        if ( title.length !== 0 && content.length !== 0 ) {
+
+                              main.emitPost({ title: $('#title').val(), content: $('#content').val() }, (err, post) => {
+                                  if (err) return console.log('post was made becasue of internal errors.');
+
+                                  main.user_data.posts = firebasedb.saveTo(`usersdb/${ this.user_data.profile.user_name }/posts/${ tool.hash() }`, post);
+                                  $('#title').val('');
+                                  $('#content').val('');
+                              });
+                        }
                     });
               });
       });
