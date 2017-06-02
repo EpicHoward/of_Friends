@@ -14,13 +14,15 @@ var main = {
 
           firebasedb.firebase.database().ref('newsfeed').on('value', (snap) => {
                 
+                
+                console.log( Object.values( snap.val() ) );
                 this.newsfeed = tool.filter(Object.values( snap.val() ), (i) => {
 
                     return tool.includes(Object.keys( this.user_data.subscribers ), i.user_name);
                 })
 
                 $('.newsfeed-container').html('');
-
+                
                 for ( var j = this.newsfeed.length; j > 0; j-- ) {
 
                     var post = this.newsfeed[j - 1];
@@ -28,7 +30,7 @@ var main = {
                         <div class='post col-xs-5 col-sm-5 col-md-8 col-xs-offset-1 col-md-offset-3'>
                             <p class='pull-right'>${ post.date }</p>
 
-                            <img style='height: 50px; width: 50px;' class='img img-rounded' src=${ this.user_data.profile.profilePic !== '' ? user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' }
+                            <img style='height: 50px; width: 50px;' class='img img-rounded' src=${ this.user_data.profile.profilePic !== '' ? this.user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' }
                             <p class='pull-left'>${ this.user_data.profile.user_name }</p>
                             <h3>${ post.title }<h3>
                             <p class='lead text-center'>${ post.content }</p>
@@ -55,26 +57,25 @@ var main = {
               date: `${ date.getMonth() + 1 }/${ date.getDate() }'/${ date.getFullYear() }`
           });
     },
-    /*
-    subscribe: function( user_name ) {
+    
+    // subscribe: function( user_name ) {
 
-        firebasedb.database().ref(`usersdb/${ user_name }/subscribers/${ this.user_data.profile.user_name }`).set( this.user_data.profile.email );
-    },
-    unsubscribe: function( user_name ) {
+    //     firebasedb.database().ref(`usersdb/${ user_name }/subscribers/${ this.user_data.profile.user_name }`).set( this.user_data.profile.email );
+    // },
+    // unsubscribe: function( user_name ) {
 
-        var subscribers = firebasedb.database().ref(`usersdb/${ user_name }/subscribers`);
-        var subs_arr = Object.keys( subscribers );
-        for ( var l in subs_arr ) {
+    //     var subscribers = firebasedb.database().ref(`usersdb/${ user_name }/subscribers`);
+    //     var subs_arr = Object.keys( subscribers );
+    //     for ( var l in subs_arr ) {
 
-             if ( subs_arr[l] === this.user_data.profile.user_name ) {
+    //          if ( subs_arr[l] === this.user_data.profile.user_name ) {
 
-                 delete subscribers[ subs_arr[l] ];
-             }
-        }
+    //              delete subscribers[ subs_arr[l] ];
+    //          }
+    //     }
 
-        firebasedb.database().ref(`usersdb/${ user_name }/subscribers`).set( subscribers );
-    }
-    */
+    //     firebasedb.database().ref(`usersdb/${ user_name }/subscribers`).set( subscribers );
+    // }
 };
 
 $('#app').hide();
@@ -96,7 +97,7 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
               main.user_data = user_data;
               $(document).ready(function() {
-
+                    
                     // used for the search query, the default is 'users'
                     var typeOfQuery = 'users';
 
@@ -105,6 +106,7 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
                     // this displays all the newsfeed post made by other users
                     main.showNewsFeed();
+                    
 
                     // if the user neve mad a post display this ui message
                     if ( Object.keys( main.user_data.posts ).length === 0 ) {
@@ -130,19 +132,19 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                         }
                     });
 
-                    $('.subscribe').click(function() {
+                    // $('.subscribe').click(function() {
 
-                        var user_name = $(this).attr('id');
+                    //     var user_name = $(this).attr('id');
 
-                        main.subscribe( user_name );
-                    });
+                    //     main.subscribe( user_name );
+                    // });
 
-                    $('.unsubcribe').click(function() {
+                    // $('.unsubcribe').click(function() {
 
-                        var user_name = $(this).attr('id');
+                    //     var user_name = $(this).attr('id');
 
-                        main.subscribe( user_name );
-                    });
+                    //     main.subscribe( user_name );
+                    // });
 
                     $('#submit').click(function () {
                         
