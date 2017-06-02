@@ -78,7 +78,6 @@ var main = {
     // }
 };
 
-$('#app').hide();
 firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
     if ( firebaseUser ) {

@@ -9,7 +9,21 @@
 <body>
 
   <div id="app">
-        <button id='logout' class='btn btn-default pull-right'>logout</button>
+        
+        <div class="sidebar col-xs-4 col-sm-4 col-md-4">
+             
+             <button id='logout' class='btn btn-default pull-right btn-sm'>logout</button>
+             
+             <div class="profile">
+                 
+             </div>
+             
+             <ul class='tabs'>
+                <button class="btn">newsfeed</button>
+                <!--<button class="btn">groups</button>-->
+                <!--<button class="btn"></button>-->
+             </ul>
+        </div>
 
         <div class="profile-container col-xs-5 col-sm-5 col-md-5">
             <h3 id='user_name'></h3>
@@ -51,6 +65,9 @@
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+      $('#app').hide();
+  </script>
   <script type="text/javascript" src="bundle.js"></script>
 </body>
 </html>
