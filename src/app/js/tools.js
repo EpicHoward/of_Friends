@@ -32,7 +32,23 @@ function includes( arr, item ) {
     return false;
 }
 
+
+function filter( arr, callback ) {
+    
+    var newArray = [];
+    for ( var i in arr ) {
+        
+        if ( callback( arr[i] ) ) {
+            
+            newArray.push( arr[i] );
+        }
+    }
+    
+    return newArray;
+}
+
 export default {
     includes: includes,
-    hash: hash
+    hash: hash,
+    filter: filter,
 };

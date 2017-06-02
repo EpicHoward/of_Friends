@@ -5,23 +5,23 @@ import './css/main.css';
 import firebasedb from './js/firebase';
 import tool from './js/tools';
 
+
+const date = new Date();
 var main = {
     user_data: undefined,
     newfeed: [],
     showNewsFeed: function() {
 
-          firebasedb.database().ref('newsfeed').on('value', (snap) => {
-
-                console.log(snap.val());
-
-                this.newsfeed = snap.val().filter((i) => {
+          firebasedb.firebase.database().ref('newsfeed').on('value', (snap) => {
+                
+                this.newsfeed = tool.filter(Object.values( snap.val() ), (i) => {
 
                     return tool.includes(Object.keys( this.user_data.subscribers ), i.user_name);
                 })
 
                 $('.newsfeed-container').html('');
 
-                for ( var j = this.newsfeed; j > 0; j-- ) {
+                for ( var j = this.newsfeed.length; j > 0; j-- ) {
 
                     var post = this.newsfeed[j - 1];
                     $('.newsfeed-container').append(`
@@ -33,7 +33,7 @@ var main = {
                             <h3>${ post.title }<h3>
                             <p class='lead text-center'>${ post.content }</p>
                         </div>
-                   `);
+                  `);
                 }
 
           });
@@ -55,9 +55,10 @@ var main = {
               date: `${ date.getMonth() + 1 }/${ date.getDate() }'/${ date.getFullYear() }`
           });
     },
+    /*
     subscribe: function( user_name ) {
 
-         firebasedb.database().ref(`usersdb/${ user_name }/subscribers/${ this.user_data.profile.user_name }`).set( this.user_data.profile.email );
+        firebasedb.database().ref(`usersdb/${ user_name }/subscribers/${ this.user_data.profile.user_name }`).set( this.user_data.profile.email );
     },
     unsubscribe: function( user_name ) {
 
@@ -73,6 +74,7 @@ var main = {
 
         firebasedb.database().ref(`usersdb/${ user_name }/subscribers`).set( subscribers );
     }
+    */
 };
 
 $('#app').hide();
@@ -82,7 +84,7 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
       // assign the email and user_name from the firebaseUser obj
       var userObj = {
-          user_name: firebaseUser.displayName.toLowerCae(),
+          user_name: firebaseUser.displayName.toLowerCase(),
           email: firebaseUser.email
       };
 
@@ -105,7 +107,7 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                     main.showNewsFeed();
 
                     // if the user neve mad a post display this ui message
-                    if ( Object.keys( this.user_data.posts ).length === 0 ) {
+                    if ( Object.keys( main.user_data.posts ).length === 0 ) {
 
                         $('#ui-message').html('You have no posts, you should make one');
                     }
@@ -115,9 +117,17 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                           return firebasedb.firebase.auth().signOut();
                     });
 
-                    $('#query-search').keydown(function(e) {
-
-                          firebasedb.searchdb({  })
+                    
+                    $('#query-search').keyup(function(e) {
+                        
+                        if ( $('#query-search').val().length !== 0  ) {
+                            
+                            firebasedb.searchdb({ type: typeOfQuery, query: $('#query-search').val()  }, (err, resp) => {
+                                if (err) return console.log(err.msg);
+                                
+                                console.log( resp );    
+                            })
+                        }
                     });
 
                     $('.subscribe').click(function() {
@@ -135,15 +145,16 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                     });
 
                     $('#submit').click(function () {
-
-                        if ( title.length !== 0 && content.length !== 0 ) {
+                        
+                        
+                        if ( $('#title').val().length !== 0 && $('#content').val().length !== 0 ) {
 
                               // emits the post to the global newsfeed
                               main.emitPost({ title: $('#title').val(), content: $('#content').val() }, (err, post) => {
                                   if (err) return console.log('post was made becasue of internal errors.');
 
                                   // returns back the post and adds to the user post
-                                  main.user_data.posts = firebasedb.saveTo(`usersdb/${ this.user_data.profile.user_name }/posts/${ tool.hash() }`, post);
+                                  main.user_data.posts = firebasedb.saveTo(`usersdb/${ main.user_data.profile.user_name }/posts/${ tool.hash() }`, post);
 
                                   // empties the users title and content textareas
                                   $('#title').val('');

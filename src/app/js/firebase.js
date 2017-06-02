@@ -30,7 +30,7 @@ function createUser( userObj ) {
            subscribers: {
                 "andre garvin" : "andre.garvin@envirostudies.org"
            },
-           posts: false,
+           posts: "",
            meta: {
                 active: "pending",
                 address: "",
@@ -64,26 +64,77 @@ function getUser( userObj, callback ) {
 
 function searchdb( obj, callback ) {
 
-    const db = firebasedb.database().ref();
-    console.log( db );
-    // switch ( obj.type ) {
-    //   case 'users':
-    //
-    //     console.log(  );
-    //     break;
-    //   case 'events':
-    //
-    //     break;
-    //   case 'groups':
-    //
-    //     break;
-    //   case 'posts':
-    //
-    //     break;
-    //   default:
-    //
-    //     break;
-    // }
+    const db = firebase.database();
+    var resp;
+    switch ( obj.type ) {
+      
+        case 'users':
+        
+            db.ref('usersdb').on('value', (snap) => {
+            
+                var users = snap.val();
+                var data = tool.filter(Object.values( users ), (i) => {
+                
+                    return i.profile.user_name.slice(0, obj.query.length) === obj.query;
+                });
+            
+                resp = callback(null, data);
+            })
+            break;
+        
+        case 'events':
+        
+            db.ref('newsfeed').on('value', (snap) => {
+            
+                var events = snap.val();
+                var data = tool.filter(Object.values( events ), (i) => {
+                
+                    return i.type === 'event' && i.title.slice(0, obj.query.length) === obj.query;
+                });
+            
+                resp = callback(null, data);
+            })
+            break;
+        
+        case 'groups':
+        
+            db.ref('groups').on('value', (snap) => {
+            
+                var groups = snap.val();
+                var data = tool.filter(Object.keys( groups ), (i) => {
+                
+                    return i.group_name.slice(0, obj.query.length) === obj.query;
+                });
+            
+                resp = callback(null, data);
+            })
+            break;
+    
+        case 'posts':
+        
+            db.ref('newsfeed').on('value', (snap) => {
+            
+                var users = snap.val();
+                var data = tool.filter(Object.values( users ), (i) => {
+                
+                    return i.title.slice(0, obj.query.length) === obj.query;
+                    // || tool.includes(i.hash_tags, obj.query)
+                });
+            
+                resp = callback(null, data);
+            })
+            break;
+      
+        default:
+        
+            resp = callback({
+                status: false,
+                msg: `No results were found for ${ obj.query }`
+            }, undefined);
+            break;
+    }
+    
+    return resp;
 }
 
 
