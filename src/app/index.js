@@ -3,7 +3,7 @@ import './css/main.css';
 
 // JavaScript files to include for the application
 import firebasedb from './js/firebase';
-import tool from './tool';
+import tool from './js/tools';
 
 var main = {
     user_data: undefined,
@@ -54,20 +54,39 @@ var main = {
               content: postObj.content,
               date: `${ date.getMonth() + 1 }/${ date.getDate() }'/${ date.getFullYear() }`
           });
+    },
+    subscribe: function( user_name ) {
+
+         firebasedb.database().ref(`usersdb/${ user_name }/subscribers/${ this.user_data.profile.user_name }`).set( this.user_data.profile.email );
+    },
+    unsubscribe: function( user_name ) {
+
+        var subscribers = firebasedb.database().ref(`usersdb/${ user_name }/subscribers`);
+        var subs_arr = Object.keys( subscribers );
+        for ( var l in subs_arr ) {
+
+             if ( subs_arr[l] === this.user_data.profile.user_name ) {
+
+                 delete subscribers[ subs_arr[l] ];
+             }
+        }
+
+        firebasedb.database().ref(`usersdb/${ user_name }/subscribers`).set( subscribers );
     }
 };
-
 
 $('#app').hide();
 firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
     if ( firebaseUser ) {
 
+      // assign the email and user_name from the firebaseUser obj
       var userObj = {
-          user_name: firebaseUser.displayName,
+          user_name: firebaseUser.displayName.toLowerCae(),
           email: firebaseUser.email
       };
 
+      // get the users information
       firebasedb.getUser( userObj, (err, user_data ) => {
 
               $('#app').show();
@@ -76,10 +95,16 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
               main.user_data = user_data;
               $(document).ready(function() {
 
+                    // used for the search query, the default is 'users'
+                    var typeOfQuery = 'users';
+
+                    // display the profile information
                     main.displayName();
 
+                    // this displays all the newsfeed post made by other users
                     main.showNewsFeed();
 
+                    // if the user neve mad a post display this ui message
                     if ( Object.keys( this.user_data.posts ).length === 0 ) {
 
                         $('#ui-message').html('You have no posts, you should make one');
@@ -90,14 +115,37 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                           return firebasedb.firebase.auth().signOut();
                     });
 
+                    $('#query-search').keydown(function(e) {
+
+                          firebasedb.searchdb({  })
+                    });
+
+                    $('.subscribe').click(function() {
+
+                        var user_name = $(this).attr('id');
+
+                        main.subscribe( user_name );
+                    });
+
+                    $('.unsubcribe').click(function() {
+
+                        var user_name = $(this).attr('id');
+
+                        main.subscribe( user_name );
+                    });
+
                     $('#submit').click(function () {
 
                         if ( title.length !== 0 && content.length !== 0 ) {
 
+                              // emits the post to the global newsfeed
                               main.emitPost({ title: $('#title').val(), content: $('#content').val() }, (err, post) => {
                                   if (err) return console.log('post was made becasue of internal errors.');
 
+                                  // returns back the post and adds to the user post
                                   main.user_data.posts = firebasedb.saveTo(`usersdb/${ this.user_data.profile.user_name }/posts/${ tool.hash() }`, post);
+
+                                  // empties the users title and content textareas
                                   $('#title').val('');
                                   $('#content').val('');
                               });
@@ -109,6 +157,7 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
     }
     else {
 
+        // if the user is logged in then transfer them to the auth page
         window.open('auth.html', '_self');
     }
 });

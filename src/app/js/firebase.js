@@ -21,8 +21,8 @@ function createUser( userObj ) {
            profile: {
                 profilePic: "",
                 user_name: user_name,
-                first_name: user_name.toLowerCase().split(' ')[0],
-                last_name: user_name.toLowerCase().split(' ')[user_name.toLowerCase().split(' ').length - 1],
+                first_name: user_name.split(' ')[0],
+                last_name: user_name.split(' ')[user_name.split(' ').length - 1],
                 email: userObj.email,
                 employement: "",
                 bio: ""
@@ -50,9 +50,9 @@ function getUser( userObj, callback ) {
     usersdb.on('value', (snap) => {
 
         var users = snap.val();
-        if ( tool.includes(Object.keys( users ), userObj.user_name.toLowerCase()) ) {
+        if ( tool.includes(Object.keys( users ), userObj.user_name) ) {
 
-            return callback(null, users[ userObj.user_name.toLowerCase() ]);
+            return callback(null, users[ userObj.user_name ]);
         }
         else {
 
@@ -60,6 +60,31 @@ function getUser( userObj, callback ) {
         }
     });
 };
+
+
+function searchdb( obj, callback ) {
+
+    const db = firebasedb.database().ref();
+    console.log( db );
+    // switch ( obj.type ) {
+    //   case 'users':
+    //
+    //     console.log(  );
+    //     break;
+    //   case 'events':
+    //
+    //     break;
+    //   case 'groups':
+    //
+    //     break;
+    //   case 'posts':
+    //
+    //     break;
+    //   default:
+    //
+    //     break;
+    // }
+}
 
 
 export default {
@@ -77,5 +102,5 @@ export default {
               console.log(err.message);
           }
     },
-    // getFrom: getFrom,
+    searchdb: searchdb
 };
