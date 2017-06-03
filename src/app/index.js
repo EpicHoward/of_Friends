@@ -11,22 +11,20 @@ var main = {
     user_data: undefined,
     newfeed: [],
     showNewsFeed: function() {
-
+          
           firebasedb.firebase.database().ref('newsfeed').on('value', (snap) => {
                 
                 
-                console.log( Object.values( snap.val() ) );
+                $('#newsfeed-container').html('');
                 this.newsfeed = tool.filter(Object.values( snap.val() ), (i) => {
-
-                    return tool.includes(Object.keys( this.user_data.subscribers ), i.user_name);
+                    
+                    return tool.includes(Object.keys( this.user_data.subscribed ), i.user_name);
                 })
-
-                $('.newsfeed-container').html('');
                 
                 for ( var j = this.newsfeed.length; j > 0; j-- ) {
 
                     var post = this.newsfeed[j - 1];
-                    $('.newsfeed-container').append(`
+                    $('#newsfeed-container').append(`
                         <div class='post col-xs-5 col-sm-5 col-md-8 col-xs-offset-1 col-md-offset-3'>
                             <p class='pull-right'>${ post.date }</p>
 
@@ -44,18 +42,20 @@ var main = {
     displayName: function() {
 
         $('#user_name').html(this.user_data.profile.user_name);
-        $('#email').html(this.user_data.profile.email);
+        $('title').text(`Profile - ${ this.user_data.profile.user_name }`);
     },
     emitPost: function( postObj, callback ) {
 
-          this.newsfeed = firebasedb.saveTo(`newsfeed/${ tool.hash() }`,
-          {
+          var post = {
               id: Object.keys( this.user_data.posts ).length,
               user_name: this.user_data.profile.user_name,
               title: postObj.title,
               content: postObj.content,
               date: `${ date.getMonth() + 1 }/${ date.getDate() }'/${ date.getFullYear() }`
-          });
+          };
+          this.newsfeed = firebasedb.saveTo(`newsfeed/${ tool.hash() }`, post);
+          
+          return callback(null, post);
     },
     
     // subscribe: function( user_name ) {
@@ -78,6 +78,23 @@ var main = {
     // }
 };
 
+function switchTab( tab_name ) {
+    
+    console.log(`swicthing to ${ tab_name } tab.`);
+    var tabs = ['#search-container', '#newsfeed-container', '#profile-container'];
+    $(tab_name).show();
+    
+    for ( var t in tabs ) {
+        
+        if ( tab_name !== tabs[t] ) {
+            
+            $(tabs[t]).hide();
+        }
+    }
+}
+
+
+$('#app').hide();
 firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
     if ( firebaseUser ) {
@@ -117,12 +134,30 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
 
                           return firebasedb.firebase.auth().signOut();
                     });
-
                     
-                    $('#query-search').keyup(function(e) {
+                    $('.tab-btn').click(function() {
                         
+                        switchTab(`#${ $(this).attr('id') }-container`);
+                    })
+                    
+                    $('.search-tab').click(function() {
+                        
+                        typeOfQuery = $(this).attr('id');
                         if ( $('#query-search').val().length !== 0  ) {
                             
+                            firebasedb.searchdb({ type: typeOfQuery, query: $('#query-search').val()  }, (err, resp) => {
+                                if (err) return console.log(err.msg);
+                                
+                                console.log( resp );   
+                            })
+                        }
+                    });
+                    $('#query-search').keyup(function(e) {
+                        
+                        switchTab('#search-container');
+                        if ( $('#query-search').val().length !== 0  ) {
+                            
+                            $('#query').text($('#query-search').val());
                             firebasedb.searchdb({ type: typeOfQuery, query: $('#query-search').val()  }, (err, resp) => {
                                 if (err) return console.log(err.msg);
                                 
@@ -145,6 +180,14 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                     //     main.subscribe( user_name );
                     // });
 
+                    $('#showPostContainer').click(function() {
+                        
+                        $('.post-container').show();
+                    });
+                    $('#closePostContainer').click(function() {
+                        
+                        $('.post-container').hide();
+                    });
                     $('#submit').click(function () {
                         
                         
@@ -153,7 +196,8 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                               // emits the post to the global newsfeed
                               main.emitPost({ title: $('#title').val(), content: $('#content').val() }, (err, post) => {
                                   if (err) return console.log('post was made becasue of internal errors.');
-
+                                  
+                                  console.log( post );
                                   // returns back the post and adds to the user post
                                   main.user_data.posts = firebasedb.saveTo(`usersdb/${ main.user_data.profile.user_name }/posts/${ tool.hash() }`, post);
 

@@ -5,46 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
   <title>Profile</title>
-  <style type="text/css">
-      .sidebar {
-            border-right: 1px solid #eee;
-            background-color: #f7f7f7;
-            overflow-x: hidden;
-            overflow-y: auto;
-            position: fixed;
-            display: block;
-            padding: 20px;
-            z-index: 1000;
-            top: 0px;
-            bottom: 0;
-            left: 0;
-      }
-      .sidebar .btn {
-          margin: 10px 10px 0px 0px;
-      }
-      .sidebar .profile {
-          border-bottom: 2px dashed #ddd;
-      }
-      .sidebar .profile h2 {
-          margin-bottom: 20px;
-      }
-      .sidebar .profile img {
-          height: 140px;
-          width: 140px;
-      }
-  </style>
 </head>
 <body>
 
   <div id="app">
         
-        <div class="sidebar col-xs-4 col-sm-4 col-md-3 row">
+        <div class="sidebar col-xs-4 col-sm-4 col-md-3">
              
              <button id='logout' class='btn btn-default pull-right'>logout</button>
              
              <div class="profile col-xs-12 col-sm-12 col-md-12 row">
                 <img class='img img-rounded' src="http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG" />
-                <h2>andre agrvin</h2>
+                <h2 id='user_name'></h2>
              </div>
              
              <ul class='tabs col-xs-12 col-sm-12 col-md-12 row'>
@@ -54,57 +26,56 @@
              </ul>
         </div>
         
-        <div class="main-container col-xs-6 col-sm-6 col-md-7 row">
-            <div class="navbar navbar-clear row">
-            <div class="col-xs-4 colsm-4 col-md-4">
-                <input class='form-control' placeholder='search' />
-            </div>
+        <div class="main-container col-xs-8 col-sm-8 col-md-9 pull-right">
+            
+              <div class="navbar navbar-clear navbar-static-top row">
+                  <div class="col-xs-9 col-sm-9 col-md-6">
+                        <input id='query-search' class='form-control' placeholder='search' />
+                  </div>
+                  
+                  <button id='showPostContainer' class="btn btn-success pull-right">make a post</button>
+              </div>
+              
+              <div class="post-container col-xs-7 col-ms-7 col-md-7 col-xs-offset-2">  
+                    
+                    <button id='closePostContainer' class="btn btn-default">cancel</button>
+                    
+                    <div class="col-xs-8 col-sm-8 col-md-8">
+                            
+                        <input id='title' type="text" class='form-control' placeholder="title" />
+                        <textarea id='content' class='form-control' rows='6' placeholder='write something'></textarea>
+                      
+                    </div>
+                  
+                    <button id='submit' class='btn btn-success pull-right'>submit</button>
+              </div>
+              
+              
+              <div id="profile-container" class="col-xs-12 col-sm-12 col-nd-12"></div>
+              
+              <div id="newsfeed-container" class="col-xs-12 col-sm-12 col-nd-12">
+                     <h2 id='ui-message' class='text-center'></h2>
+              </div>
+              
+                <div id='search-container' class="col-xs-12 col-sm-12 col-nd-12">
+                    <p class='lead text-left'>search for '<span id='query'></span>'</p>
+                
+                    <button id='users' class="btn btn-default">users</button>
+                    <button id='events' class="btn btn-default">events</button>
+                    <button id='groups' class="btn btn-default">groups</button>
+                    
+                    <div id="results"></div>
+                </div>
+              
+              
         </div>
-        </div>
-
-        <!--<div class="profile-container col-xs-5 col-sm-5 col-md-5">-->
-        <!--    <h3 id='user_name'></h3>-->
-        <!--    <h3 id='email'></h3>-->
-
-        <!--    <div class="post-container col-md-12 col-sm-12 col-xs-12">-->
-
-        <!--          <input id='title' type="text" class='form-control' placeholder="title" />-->
-        <!--          <textarea id='content' class='form-control' rows='4' placeholder='write something'></textarea>-->
-
-        <!--          <button id='submit' class='btn btn-success pull-right'>submit</button>-->
-        <!--    </div>-->
-        <!--</div>-->
-
-
-        <!--<div class="main-container">-->
-
-        <!--      <div class="col-xs-5 col-sm-5 col-md-5 pull-right">-->
-        <!--            <input id='query-search' type="text" class="form-control" placeholder="search" />-->
-
-        <!--            <button type="button" class='btn btn-default'>newsfeed</button>-->
-        <!--            <button type="button" class='btn btn-default'>settings</button>-->
-        <!--      </div>-->
-
-
-              <!-- displays post the user makes and other the user subscribs to -->
-        <!--      <div class="newsfeed-container col-xs-5 col-sm-5 col-nd-5">-->
-        <!--           <h2 id='ui-message' class='text-center'></h2>-->
-        <!--      </div>-->
-
-              <!-- this div displays the results of a query search  -->
-        <!--      <div class="results-container">-->
-        <!--            <p id='query' class='lead text-center'></p>-->
-        <!--      </div>-->
-
-              <!-- the users settings data -->
-        <!--      <div class="settings-container"></div>-->
-        <!--</div>-->
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
-    //   $('#app').hide();
+      $('#app').hide();
   </script>
-  <!--<script type="text/javascript" src="bundle.js"></script>-->
+  <script type="text/javascript" src="bundle.js"></script>
+
 </body>
 </html>

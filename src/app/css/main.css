@@ -1,144 +1,56 @@
-#logout {
+.sidebar {
+    border-right: 1px solid #eee;
+    background-color: #f7f7f7;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+    display: block;
+    padding: 20px;
+    z-index: 1000;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+}
+.sidebar .btn {
     margin: 10px 10px 0px 0px;
 }
-
-.profile-container {
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    margin: 20px;
+.sidebar .profile {
+    border-bottom: 2px dashed #ddd;
 }
-
-.post-container {
-    border-top: 1px dashed #ddd;
-    margin-top: 20px;
-    padding: 10px;
-}
-
-.post-container input {
-    margin: 10px 0px 10px 0px;
-}
-
-.post-container textarea {
-    margin: 13px 0px 10px 0px;
-}
-
-.main-container {
-    margin-top: 20px;
-}
-
-#query-search {
+.sidebar .profile h2 {
     margin-bottom: 20px;
 }
-
+.sidebar .profile img {
+    height: 140px;
+    width: 140px;
+}
+.main-container {
+    /*border: 1px solid red;*/
+}
+.navbar-clear {
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    padding: 10px;
+}
+.post-container {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    display: none;
+    padding: 5px;
+}
+.post-container .form-control {
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
 .post {
     border: 1px solid #ddd;
     border-radius: 2px;
     padding: 20px;
     margin: 20px;
 }
-
-
-/*
-
-.btn-success, .btn-blue {
-  border: none;
+#search-container {
+    background-color: #fff;
+    padding: 10px;
+    display: none;
 }
-
-.btn-success {
-  background-color: #15CA6E;
-}
-
-.btn-default {
-  background-color: #38a3dc;
-  color: #fff;
-}
-.navbar {
-  margin-bottom: 0px;
-  margin-top: 0px;
-}
-
-.navbar-clear {
-  border-bottom: none;
-  background-color: #fff;
-}
-
-
-.logo h1 {
-  margin-left: 10px;
-  font-size: 48px;
-  padding: 2px;
-}
-
-.left-panel {
-  border: 1px solid purple;
-  padding: 10px
-}
-
-.left-panel .search, .btn {
-  margin-top: 10px;
-}
-
-.search {
-  border: 1px solid #eee;
-}
-
-.left-panel .btn {
-  margin-right: 10px;
-}
-
-.jumbotron {
-  background-image: url('https://camo.githubusercontent.com/f28b5bc7822f1b7bb28a96d8d09e7d79169248fc/687474703a2f2f692e696d6775722e636f6d2f4a65567164514d2e706e67');
-  background-position: center center;
-  background-repeat: no-repeat;
-  margin-bottom: 0px;
-  padding: 150px;
-}
-
-.main-container {
-  background-color: #38a3dc;
-}
-
-.title {
-  margin-top: 20px;
-  font-size: 58px;
-  color: #fff;
-}
-
-.tab {
-  margin: 10px 0px 50px 0px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  padding: 20px;
-}
-
-.content {
-  font-size: 22px;
-}
-
-.content p, .content h2 {
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 10px;
-  font-size: 30px;
-  padding: 10px;
-}
-
-.mailbox {
-  margin: 67px 0px 20px 0px;
-  padding: 10px;
-}
-
-.mailbox input {
-  margin: 20px 0px 20px 0px;
-}
-
-
-input {
-  margin-top: 15px;
-}
-
-button {
-  margin: 20px;
-}
-
-*/
