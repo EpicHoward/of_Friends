@@ -43,11 +43,24 @@
     margin-bottom: 10px;
     margin-top: 20px;
 }
-.post {
+.post-card {
     border: 1px solid #ddd;
     border-radius: 2px;
     padding: 20px;
     margin: 20px;
+}
+.post-card #date {
+    color: #eee;
+}
+.post-card img {
+    height: 50px;
+    width: 50px;
+}
+.post-card #title {
+    margin-left: 10px;
+}
+.post-card #content {
+    word-wrap: break-word;
 }
 #search-container {
     background-color: #fff;

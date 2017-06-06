@@ -20,7 +20,7 @@
              </div>
              
              <ul class='tabs col-xs-12 col-sm-12 col-md-12 row'>
-                <button class="btn btn-default btn-block btn-lg">newsfeed</button>
+                <button id='newsfeed' class="tab-btn btn btn-default btn-block btn-lg">newsfeed</button>
                 <!--<button class="btn">groups</button>-->
                 <!--<button class="btn"></button>-->
              </ul>
@@ -28,15 +28,15 @@
         
         <div class="main-container col-xs-8 col-sm-8 col-md-9 pull-right">
             
-              <div class="navbar navbar-clear navbar-static-top row">
-                  <div class="col-xs-9 col-sm-9 col-md-6">
+                <div class="navbar navbar-clear navbar-static-top row">
+                    <div class="col-xs-9 col-sm-9 col-md-6">
                         <input id='query-search' class='form-control' placeholder='search' />
-                  </div>
+                    </div>
                   
-                  <button id='showPostContainer' class="btn btn-success pull-right">make a post</button>
-              </div>
+                    <button id='showPostContainer' class="btn btn-success pull-right">make a post</button>
+                </div>
               
-              <div class="post-container col-xs-7 col-ms-7 col-md-7 col-xs-offset-2">  
+                <div class="post-container col-xs-7 col-ms-7 col-md-7 col-xs-offset-2">  
                     
                     <button id='closePostContainer' class="btn btn-default">cancel</button>
                     
@@ -48,21 +48,28 @@
                     </div>
                   
                     <button id='submit' class='btn btn-success pull-right'>submit</button>
-              </div>
+                </div>
               
               
-              <div id="profile-container" class="col-xs-12 col-sm-12 col-nd-12"></div>
+                <div id="profile-container" class="col-xs-12 col-sm-12 col-nd-12">
+                    <h2 id='#user_name'></h2>
+                    <h3 id='bio'></h3>
+                    <ul id='hashtags'></ul>
+                </div>
               
-              <div id="newsfeed-container" class="col-xs-12 col-sm-12 col-nd-12">
-                     <h2 id='ui-message' class='text-center'></h2>
-              </div>
+                <div id="newsfeed-container" class="col-xs-12 col-sm-12 col-nd-12">
+                    <h2 id='ui-message' class='text-center'></h2>
+                </div>
               
                 <div id='search-container' class="col-xs-12 col-sm-12 col-nd-12">
+                    
                     <p class='lead text-left'>search for '<span id='query'></span>'</p>
-                
-                    <button id='users' class="btn btn-default">users</button>
-                    <button id='events' class="btn btn-default">events</button>
-                    <button id='groups' class="btn btn-default">groups</button>
+                    
+                    <div style='margin-top: 10px; margin-bottom: 10px;' class="col-xs-12 co-sm-12 col-md-12">
+                        <button id='users' class="btn btn-default">users</button>
+                        <button id='events' class="btn btn-default">events</button>
+                        <button id='groups' class="btn btn-default">groups</button>
+                    </div>
                     
                     <div id="results"></div>
                 </div>

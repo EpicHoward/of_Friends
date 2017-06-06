@@ -51,4 +51,14 @@ export default {
     includes: includes,
     hash: hash,
     filter: filter,
+    getObjectValues: function( obj ) {
+        
+        var values = [];
+        for ( var i in obj ) {
+            
+            values.push(obj[i]);
+        }
+        
+        return values;
+    }
 };

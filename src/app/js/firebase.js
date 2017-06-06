@@ -73,11 +73,20 @@ function searchdb( obj, callback ) {
             db.ref('usersdb').on('value', (snap) => {
             
                 var users = snap.val();
-                var data = tool.filter(Object.values( users ), (i) => {
+                var data = tool.filter(tool.getObjectValues( users ), (i) => {
                 
                     return i.profile.user_name.slice(0, obj.query.length) === obj.query;
                 });
-            
+                
+                data = data.map((i) => {
+                    
+                    return {
+                        user_name: i.profile.user_name,
+                        profile_pic: i.profile.profilePic,
+                        hash_tags: i.profile.hash_tags,
+                        type: i.meta.type
+                    };
+                });
                 resp = callback(null, data);
             })
             break;
@@ -87,7 +96,7 @@ function searchdb( obj, callback ) {
             db.ref('newsfeed').on('value', (snap) => {
             
                 var events = snap.val();
-                var data = tool.filter(Object.values( events ), (i) => {
+                var data = tool.filter(tool.getObjectValues( events ), (i) => {
                 
                     return i.type === 'event' && i.title.slice(0, obj.query.length) === obj.query;
                 });
@@ -115,7 +124,7 @@ function searchdb( obj, callback ) {
             db.ref('newsfeed').on('value', (snap) => {
             
                 var users = snap.val();
-                var data = tool.filter(Object.values( users ), (i) => {
+                var data = tool.filter(tool.getObjectValues( users ), (i) => {
                 
                     return i.title.slice(0, obj.query.length) === obj.query;
                     // || tool.includes(i.hash_tags, obj.query)

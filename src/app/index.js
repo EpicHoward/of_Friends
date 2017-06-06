@@ -16,7 +16,7 @@ var main = {
                 
                 
                 $('#newsfeed-container').html('');
-                this.newsfeed = tool.filter(Object.values( snap.val() ), (i) => {
+                this.newsfeed = tool.filter(tool.getObjectValues( snap.val() ), (i) => {
                     
                     return tool.includes(Object.keys( this.user_data.subscribed ), i.user_name);
                 })
@@ -26,12 +26,16 @@ var main = {
                     var post = this.newsfeed[j - 1];
                     $('#newsfeed-container').append(`
                         <div class='post col-xs-5 col-sm-5 col-md-8 col-xs-offset-1 col-md-offset-3'>
-                            <p class='pull-right'>${ post.date }</p>
-
-                            <img style='height: 50px; width: 50px;' class='img img-rounded' src=${ this.user_data.profile.profilePic !== '' ? this.user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' }
+                            <p id='date' class='pull-right'>${ post.date }</p>
+                            
+                            <div class='col-xs-3 col-sm-3 col-md-2'>
+                                <img class='img img-rounded' src=${ this.user_data.profile.profilePic !== '' ? this.user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' } />
+                            </div>
+                            
                             <p class='pull-left'>${ this.user_data.profile.user_name }</p>
-                            <h3>${ post.title }<h3>
-                            <p class='lead text-center'>${ post.content }</p>
+                            
+                            <h3 id='title'>${ post.title }<h3>
+                            <p id='content' class='lead text-left'>${ post.content }</p>
                         </div>
                   `);
                 }
@@ -145,10 +149,32 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                         typeOfQuery = $(this).attr('id');
                         if ( $('#query-search').val().length !== 0  ) {
                             
+                            $('#results').html('');
                             firebasedb.searchdb({ type: typeOfQuery, query: $('#query-search').val()  }, (err, resp) => {
                                 if (err) return console.log(err.msg);
                                 
-                                console.log( resp );   
+                                console.log( resp );
+                                // for ( var j in resp ) {
+                                    
+                                //     if ( typeOfQuery === 'user' ) {
+                                        
+                                //         var profile = resp[j]
+                                //         $('#results').append(`<div class='col-xs-5 col-sm-5 col-md-4'>
+                                //             <div class='col-xs-3 col-sm-3 col-md-3'>
+                                //                 <img class='img img-round' src='${ profile.profile_pic }' />
+                                //             </div>
+                                //             <h2>${ profile.user_name }</h2>
+                                            
+                                //             ${ 
+                                //                 tool.includes(main.user_data.subscribed, profile.user_name) ? 
+                                //                 "<button id='unsubcribe' class='btn btn-dnager'>unsubcribe</button>" :
+                                //                 "<button id='subcribed' class='btn btn-default'>subscribe</button>"
+                                //             }
+                                            
+                                //             ${ profile.hashtags.map((t) => `<li>#${ t }</li>` ) }
+                                //         </div>`);
+                                //     }
+                                // }   
                             })
                         }
                     });
@@ -161,8 +187,13 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                             firebasedb.searchdb({ type: typeOfQuery, query: $('#query-search').val()  }, (err, resp) => {
                                 if (err) return console.log(err.msg);
                                 
-                                console.log( resp );    
+                                console.log('index.js');
+                                console.log( resp );
                             })
+                        }
+                        else {
+                            
+                            $('#results').html('');
                         }
                     });
 
