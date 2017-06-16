@@ -29,7 +29,7 @@ var main = {
                             <p id='date' class='pull-right'>${ post.date }</p>
                             
                             <div class='col-xs-3 col-sm-3 col-md-2'>
-                                <img class='img img-rounded' src=${ this.user_data.profile.profilePic !== '' ? this.user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' } />
+                                <img class='img img-rounded card-img' src=${ this.user_data.profile.profilePic !== '' ? this.user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' } />
                             </div>
                             
                             <p class='pull-left'>${ this.user_data.profile.user_name }</p>
@@ -43,7 +43,7 @@ var main = {
           });
 
     },
-    displayName: function() {
+    displayProfile: function() {
 
         $('#user_name').html(this.user_data.profile.user_name);
         $('title').text(`Profile - ${ this.user_data.profile.user_name }`);
@@ -62,24 +62,28 @@ var main = {
           return callback(null, post);
     },
     
-    // subscribe: function( user_name ) {
+    subscribe: function( user_name ) {
 
-    //     firebasedb.database().ref(`usersdb/${ user_name }/subscribers/${ this.user_data.profile.user_name }`).set( this.user_data.profile.email );
-    // },
-    // unsubscribe: function( user_name ) {
+        firebasedb.saveTo(`usersdb/${ user_name }/subscribers/${ this.user_data.profile.user_name }`, this.user_data.profile.email );
+    },
+    unsubscribe: function( user_name ) {
 
-    //     var subscribers = firebasedb.database().ref(`usersdb/${ user_name }/subscribers`);
-    //     var subs_arr = Object.keys( subscribers );
-    //     for ( var l in subs_arr ) {
+        var subscribers = firebasedb.database().ref(`usersdb/${ user_name }/subscribers`);
+        
+        subscribers.on('value', (subs) => {
+            
+            var subs_arr = Object.keys( subscribers );
+            for ( var l in subs_arr ) {
 
-    //          if ( subs_arr[l] === this.user_data.profile.user_name ) {
+                if ( subs_arr[l] === this.user_data.profile.user_name ) {
+    
+                    delete subscribers[ subs_arr[l] ];
+                }
+            }
+        })
 
-    //              delete subscribers[ subs_arr[l] ];
-    //          }
-    //     }
-
-    //     firebasedb.database().ref(`usersdb/${ user_name }/subscribers`).set( subscribers );
-    // }
+        firebasedb.saveTo(`usersdb/${ user_name }/subscribers`, subscribers);
+    }
 };
 
 function switchTab( tab_name ) {
@@ -122,7 +126,7 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                     var typeOfQuery = 'users';
 
                     // display the profile information
-                    main.displayName();
+                    main.displayProfile();
 
                     // this displays all the newsfeed post made by other users
                     main.showNewsFeed();
@@ -131,19 +135,46 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                     // if the user neve mad a post display this ui message
                     if ( Object.keys( main.user_data.posts ).length === 0 ) {
 
-                        $('#ui-message').html('You have no posts, you should make one');
+                        $('#newfeed-container').html('<h2>You have no posts, you should make one.</h2>');
                     }
-
-                    $('#logout').click(function() {
-
-                          return firebasedb.firebase.auth().signOut();
-                    });
                     
-                    $('.tab-btn').click(function() {
+                    $('#query-search').keyup(function(e) {
                         
-                        switchTab(`#${ $(this).attr('id') }-container`);
-                    })
-                    
+                        
+                        switchTab('#search-container');
+                        $('#ui-message').show();
+                        if ( $('#query-search').val().length !== 0  ) {
+                            
+                            $('#query').text($('#query-search').val());
+                            firebasedb.searchdb({ type: typeOfQuery, query: $('#query-search').val()  }, (err, resp) => {
+                                if (err) return console.log(err.msg);
+                                
+                                for ( var j in resp ) {
+                                    
+                                    var profile = resp[j];
+                                    $('#results').append(`<div id='${ profile.user_name }' class='user-bin col-xs-5 col-sm-5 col-md-4'>
+                                        <h2>${ profile.user_name }</h2>
+                                            
+                                        ${ 
+                                            tool.includes(main.user_data.subscribed, profile.user_name) ? 
+                                            "<button id='unsubcribe' class='btn btn-dnager'>unsubcribe</button>" :
+                                            "<button id='subcribed' class='btn btn-default'>subscribe</button>"
+                                        }
+                                    </div>`);
+                                    
+                                    for ( var t in profile.hash_tags ) {
+                                        
+                                        $(`#${ profile.user_name }`).append(`<p class='hashtag'>${ profile.hash_tags[t] }</p>`);
+                                    }
+                                }
+                            })
+                        }
+                        else {
+                            
+                            $('#results').html('');
+                            $('#ui-message').hide();
+                        }
+                    });
                     $('.search-tab').click(function() {
                         
                         typeOfQuery = $(this).attr('id');
@@ -153,64 +184,11 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                             firebasedb.searchdb({ type: typeOfQuery, query: $('#query-search').val()  }, (err, resp) => {
                                 if (err) return console.log(err.msg);
                                 
-                                console.log( resp );
-                                // for ( var j in resp ) {
-                                    
-                                //     if ( typeOfQuery === 'user' ) {
-                                        
-                                //         var profile = resp[j]
-                                //         $('#results').append(`<div class='col-xs-5 col-sm-5 col-md-4'>
-                                //             <div class='col-xs-3 col-sm-3 col-md-3'>
-                                //                 <img class='img img-round' src='${ profile.profile_pic }' />
-                                //             </div>
-                                //             <h2>${ profile.user_name }</h2>
-                                            
-                                //             ${ 
-                                //                 tool.includes(main.user_data.subscribed, profile.user_name) ? 
-                                //                 "<button id='unsubcribe' class='btn btn-dnager'>unsubcribe</button>" :
-                                //                 "<button id='subcribed' class='btn btn-default'>subscribe</button>"
-                                //             }
-                                            
-                                //             ${ profile.hashtags.map((t) => `<li>#${ t }</li>` ) }
-                                //         </div>`);
-                                //     }
-                                // }   
-                            })
-                        }
-                    });
-                    $('#query-search').keyup(function(e) {
-                        
-                        switchTab('#search-container');
-                        if ( $('#query-search').val().length !== 0  ) {
-                            
-                            $('#query').text($('#query-search').val());
-                            firebasedb.searchdb({ type: typeOfQuery, query: $('#query-search').val()  }, (err, resp) => {
-                                if (err) return console.log(err.msg);
-                                
-                                console.log('index.js');
+                                console.log('clicked');
                                 console.log( resp );
                             })
                         }
-                        else {
-                            
-                            $('#results').html('');
-                        }
                     });
-
-                    // $('.subscribe').click(function() {
-
-                    //     var user_name = $(this).attr('id');
-
-                    //     main.subscribe( user_name );
-                    // });
-
-                    // $('.unsubcribe').click(function() {
-
-                    //     var user_name = $(this).attr('id');
-
-                    //     main.subscribe( user_name );
-                    // });
-
                     $('#showPostContainer').click(function() {
                         
                         $('.post-container').show();
@@ -238,6 +216,29 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                               });
                         }
                     });
+                    
+                    $('.tab-btn').click(function() {
+                        
+                        switchTab(`#${ $(this).attr('id') }-container`);
+                    });
+                    
+                    $('#logout').click(function() {
+
+                        return firebasedb.firebase.auth().signOut();
+                    });
+                    // $('.subscribe').click(function() {
+
+                    //     var user_name = $(this).attr('id');
+
+                    //     main.subscribe( user_name );
+                    // });
+
+                    // $('.unsubcribe').click(function() {
+
+                    //     var user_name = $(this).attr('id');
+
+                    //     main.subscribe( user_name );
+                    // });
               });
       });
 
