@@ -10,22 +10,22 @@
 
   <div id="app">
         
-        <div class="sidebar col-xs-4 col-sm-4 col-md-3">
-             
-             <button id='logout' class='btn btn-default pull-right'>logout</button>
-             
-             <div class="profile col-xs-12 col-sm-12 col-md-12 row">
-                <img class='img img-rounded' src="http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG" />
-                <h2 id='user_name'></h2>
-             </div>
-             
-             <ul class='tabs col-xs-12 col-sm-12 col-md-12 row'>
-                <button id='newsfeed' class="tab-btn btn btn-default btn-block btn-lg">newsfeed</button>
-             </ul>
-        </div>
-        
         <div class="main-container col-xs-8 col-sm-8 col-md-9 pull-right">
-            
+                
+                <div class="sidebar col-xs-4 col-sm-4 col-md-3">
+             
+                    <button id='logout' class='btn btn-default pull-right'>logout</button>
+             
+                    <div class="profile col-xs-12 col-sm-12 col-md-12 row">
+                        <img class='img img-rounded' src="http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG" />
+                        <h2 id='user_name'></h2>
+                    </div>
+             
+                    <ul class='tabs col-xs-12 col-sm-12 col-md-12 row'>
+                        <button id='newsfeed' class="tab-btn btn btn-default btn-block btn-lg">newsfeed</button>
+                    </ul>
+                </div>
+        
                 <div class="navbar navbar-clear navbar-static-top row">
                     <div class="col-xs-9 col-sm-9 col-md-6">
                         <input id='query-search' class='form-control' placeholder='search' />
@@ -34,43 +34,48 @@
                     <button id='showPostContainer' class="btn btn-success pull-right">make a post</button>
                 </div>
               
-                <div class="post-container col-xs-7 col-ms-7 col-md-7 col-xs-offset-2">  
+                <div class="post-container col-xs-12 col-sm-12 col-md-12 row">  
                     
-                    <button id='closePostContainer' class="btn btn-default">cancel</button>
-                    
-                    <div class="col-xs-8 col-sm-8 col-md-8">
-                            
-                        <input id='title' type="text" class='form-control' placeholder="title" />
-                        <textarea id='content' class='form-control' rows='6' placeholder='write something'></textarea>
-                      
+                    <div class="post-panel col-xs-9 col-sm-8 col-md-8 col-xs-offset-2">
+                        <button id='closePostContainer' class="btn btn-default pull-right">cancel</button>
+         
+                        <img class="img img-responsive img-rounded pull-left" src="http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG" />
+        
+                        <div class='col-xs-12 col-sm-12 col-md-12'>
+                            <p id='user_name' class="lead"></p>
+                            <input id="title" type="text" class="form-control" placeholder='title' />
+                            <textarea id="content" class='form-control' cols="30" rows="8" placeholder='write something amazing'></textarea>
+                        </div>
+      
+                        <button id='post-btn' class="btn btn-success btn-block pull-right">
+                            <h4>post</h4>
+                        </button>
                     </div>
-                  
-                    <button id='submit' class='btn btn-success pull-right'>submit</button>
+                    
                 </div>
-              
-              
-                <div id="profile-container" class="col-xs-12 col-sm-12 col-nd-12">
-                    <h2 id='#user_name'></h2>
-                    <h3 id='bio'></h3>
-                    <ul id='hashtags'></ul>
-                </div>
-              
+                
                 <div id="newsfeed-container" class="col-xs-12 col-sm-12 col-nd-12">
                     <h2 id='ui-message' class='text-center'></h2>
                 </div>
               
-                <div id='search-container' class="col-xs-12 col-sm-12 col-nd-12">
+                <!--<div id="profile-container" class="col-xs-12 col-sm-12 col-nd-12">-->
+                <!--    <h2 id='#user_name'></h2>-->
+                <!--    <h3 id='bio'></h3>-->
+                <!--    <ul id='hashtags'></ul>-->
+                <!--</div>-->
+              
+                <!--<div id='search-container' class="col-xs-12 col-sm-12 col-nd-12">-->
                     
-                    <p class='lead text-left'>search for '<span id='query'></span>'</p>
+                <!--    <p class='lead text-left'>search for '<span id='query'></span>'</p>-->
                     
-                    <div style='margin-top: 10px; margin-bottom: 10px;' class="col-xs-12 co-sm-12 col-md-12">
-                        <button id='users' class="btn btn-default">users</button>
-                        <button id='events' class="btn btn-default">events</button>
-                        <button id='groups' class="btn btn-default">groups</button>
-                    </div>
+                <!--    <div style='margin-top: 10px; margin-bottom: 10px;' class="col-xs-12 co-sm-12 col-md-12">-->
+                <!--        <button id='users' class="btn btn-default">users</button>-->
+                <!--        <button id='events' class="btn btn-default">events</button>-->
+                <!--        <button id='groups' class="btn btn-default">groups</button>-->
+                <!--    </div>-->
                     
-                    <div id="results"></div>
-                </div>
+                <!--    <div id="results"></div>-->
+                <!--</div>-->
               
               
         </div>

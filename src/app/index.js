@@ -25,19 +25,26 @@ var main = {
 
                     var post = this.newsfeed[j - 1];
                     $('#newsfeed-container').append(`
-                        <div class='post col-xs-5 col-sm-5 col-md-8 col-xs-offset-1 col-md-offset-3'>
-                            <p id='date' class='pull-right'>${ post.date }</p>
-                            
-                            <div class='col-xs-3 col-sm-3 col-md-2'>
-                                <img class='img img-rounded card-img' src=${ this.user_data.profile.profilePic !== '' ? this.user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' } />
+                        <div class="post-card col-xs-9 col-sm-7 col-md-6 col-xs-offset-2 col-sm-offset-3 col-md-offset-3">
+                        
+                            <button class="btn btn-default btn-sm pull-right">|||</button>
+                            <img class="img img-responsive img-rounded pull-left" src=${ this.user_data.profile.profilePic !== '' ? this.user_data.profile.profilePic: 'http://alumni.harvard.edu/sites/default/files/styles/trip_photo/public/trip/main_photo/panada.png?itok=vPVFcRTG' } />
+          
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <p id='user_name' class='lead'>${ this.user_data.profile.user_name }</p>
+             
+                                <h3 id='title'>${ post.title }</h3>
+                                <p id='date' class='pull-right'>${ post.date }</p>
+                                <br>
+                                <h4 id='content'>${ post.content }</h4>
+             
+                                <span class='pull-right'>
+                                    <button class="btn btn-default btn-sm">like</button>
+                                    <button class="btn btn-primary btn-sm">share</button>
+                                </span>
                             </div>
-                            
-                            <p class='pull-left'>${ this.user_data.profile.user_name }</p>
-                            
-                            <h3 id='title'>${ post.title }<h3>
-                            <p id='content' class='lead text-left'>${ post.content }</p>
                         </div>
-                  `);
+                    `);
                 }
 
           });
@@ -197,7 +204,7 @@ firebasedb.firebase.auth().onAuthStateChanged(firebaseUser => {
                         
                         $('.post-container').hide();
                     });
-                    $('#submit').click(function () {
+                    $('#post-btn').click(function () {
                         
                         
                         if ( $('#title').val().length !== 0 && $('#content').val().length !== 0 ) {

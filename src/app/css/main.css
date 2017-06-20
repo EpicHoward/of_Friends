@@ -24,44 +24,66 @@
     height: 140px;
     width: 140px;
 }
+
+
 .main-container {
     /*border: 1px solid red;*/
 }
+
 .navbar-clear {
     border-bottom: 1px solid #ddd;
     background-color: #fff;
+    margin-bottom: 0px;
     padding: 10px;
 }
+
 .post-container {
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    border-radius: 2px;
-    display: none;
-    padding: 5px;
+    border-bottom: 1px solid #ddd;
+    /*background-color: #eee;*/
 }
-.post-container .form-control {
-    margin-bottom: 10px;
+.post-panel {
+    margin: 20px 0px 10px 0px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 10px;
+}
+.post-panel .img {
+    height: 50px;
+}
+.post-panel .form-control {
     margin-top: 20px;
 }
+.post-panel #post-btn {
+    margin-top: 20px;
+}
+
 .post-card {
+    background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 2px;
-    padding: 20px;
-    margin: 20px;
+    margin-top: 20px;
+    padding: 10px;
 }
-.post-card #date {
-    color: #eee;
-}
-.card-img {
+.post-card .img {
     height: 50px;
-    width: 50px;
 }
-.post-card #title {
-    margin-left: 10px;
+.post-card div {
+     margin-top: 3px;
 }
 .post-card #content {
-    word-wrap: break-word;
+   word-break: word-wrap;
 }
+.post-card #user_name {
+    margin: 10px 0px 0px -10px;
+}
+.post-card #date {
+    color: gray;
+}
+.post-card span .btn {
+    margin-left: 4px;
+}
+
 #search-container {
     background-color: #fff;
     padding: 10px;
